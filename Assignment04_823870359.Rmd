@@ -63,9 +63,24 @@ EducationDataPortal_02.24.2022_level_of_study.x.tuition_type %>%
   geom_errorbar(aes(x = tuition_type, y = mean_cost, ymin = mean_cost - sd_cost, ymax = mean_cost + sd_cost)
   ) 
 
+```
+```{r , echo = FALSE}
+EducationDataPortal_02.24.2022_living_arrangement %>%
+  group_by(inst_name) %>%
+  summarise(mean_book_cost = mean(books_supplies)) %>%
+  ggplot() +
+  geom_density(mapping = aes(x = mean_book_cost, y = ..count..),
+               fill = "gray") +
+  geom_vline(mapping = aes(xintercept = mean(mean_book_cost)), 
+             linetype = "dashed") +
+  labs(title = "University Book Costs Across PA",
+                  x = "Average Cost",
+                  y = "Percentage of Institutions")
+
+                             
+  
 
 
 ```
-
 
 
