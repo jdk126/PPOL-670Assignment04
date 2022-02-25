@@ -64,7 +64,7 @@ EducationDataPortal_02.24.2022_level_of_study.x.tuition_type %>%
   ) 
 
 ```
-```{r , echo = FALSE}
+```{r University Book Costs Across PA, echo = FALSE}
 EducationDataPortal_02.24.2022_living_arrangement %>%
   group_by(inst_name) %>%
   summarise(mean_book_cost = mean(books_supplies)) %>%
@@ -76,11 +76,40 @@ EducationDataPortal_02.24.2022_living_arrangement %>%
   labs(title = "University Book Costs Across PA",
                   x = "Average Cost",
                   y = "Percentage of Institutions")
+```
 
-                             
-  
+```{Comparing Reparyment Rate Per Family Income }
+
+EducationDataPortal_02.24.2022_years_since_entering_repay %>%
+  group_by(inst_name) %>%
+  ggplot(aes(x = repay_rate_lowincome, y = factor(1)))+
+  geom_point(alpha = .01, size = 5) +
+  labs(y = NULL) +
+  scale_x_discrete(breaks = 1:10 * 0.15) +
+  scale_y_discrete(labels = NULL) +
+  labs(title = "Repayment Rate For Low-Income Students",
+       x = "Repayment Rate",
+       y = NULL)
+EducationDataPortal_02.24.2022_years_since_entering_repay %>%
+  group_by(inst_name) %>%
+  ggplot(aes(x = repay_rate_midincome, y = factor(1)))+
+  geom_point(alpha = .01, size = 5) +
+  labs(y = NULL) +
+  scale_x_discrete(breaks = 1:10 * 0.15) +
+  scale_y_discrete(labels = NULL) +
+  labs(title = "Repayment Rate For Mid-Income Students",
+       x = "Repayment Rate",
+       y = NULL)
+EducationDataPortal_02.24.2022_years_since_entering_repay %>%
+  group_by(inst_name) %>%
+  ggplot(aes(x = repay_rate_highincome, y = factor(1)))+
+  geom_point(alpha = .01, size = 5) +
+  labs(y = NULL) +
+  scale_x_discrete(breaks = 1:10 * 0.15) +
+  scale_y_discrete(labels = NULL) +
+  labs(title = "Repayment Rate For High-Income Students",
+       x = "Repayment Rate",
+       y = NULL)
 
 
 ```
-
-
