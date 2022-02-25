@@ -45,3 +45,27 @@ EducationDataPortal_02.24.2022_award_level %>%
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+
+```{r Average Cost Per Tutition Type, echo=FALSE}
+EducationDataPortal_02.24.2022_level_of_study.x.tuition_type %>%
+  group_by(tuition_type,
+           level_of_study = "Undergraduate") %>%
+  summarise(mean_cost = mean(tuition_fees_ft, na.rm=TRUE),
+            sd_cost = sd(tuition_fees_ft, na.rm = TRUE)) %>%
+  ggplot()+
+  geom_point(mapping = aes(x = tuition_type, y = mean_cost)) +
+  labs(title = "Average Cost By Tuition Type",
+                  x = "Tuition Type",
+                  y = "Average Cost") +
+  geom_errorbar(aes(x = tuition_type, y = mean_cost, ymin = mean_cost - sd_cost, ymax = mean_cost + sd_cost)
+  ) 
+
+
+
+```
+
+
+
