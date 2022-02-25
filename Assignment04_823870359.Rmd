@@ -2,22 +2,17 @@
 title: "Assignment04_823870359"
 author: "Jake Kochmansky"
 date: "2/23/2022"
-output: html_document
+output:
+  html_document: default
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=TRUE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(ggplot2)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r Installing Data}
+```{r Installing Data, echo = TRUE}
 ## Query URL:https://ed-data-portal.urban.org/data-explorer/explorer/?educationLevel=College&fipsNumbers=42&endYear=2019&timeframeType=most-recent&togglesList=23-530%2C22-528%2C66-452%2C66-451%2C66-450%2C6-1108%2C10-1120
 EducationDataPortal_02.24.2022_years_since_entering_repay <- read.csv("~/Downloads/EducationDataPortal_02.24.2022_all_files/EducationDataPortal_02.24.2022_years_since_entering_repay.csv")
 EducationDataPortal_02.24.2022_living_arrangement <- read.csv("~/Downloads/EducationDataPortal_02.24.2022_all_files/EducationDataPortal_02.24.2022_living_arrangement.csv")
@@ -25,10 +20,15 @@ EducationDataPortal_02.24.2022_datadictionary <- read.csv("~/Downloads/Education
 EducationDataPortal_02.24.2022_level_of_study.x.tuition_type <- read.csv("~/Downloads/EducationDataPortal_02.24.2022_all_files/EducationDataPortal_02.24.2022_level_of_study x tuition_type.csv")
 EducationDataPortal_02.24.2022_award_level <- read.csv("~/Downloads/EducationDataPortal_02.24.2022_all_files/EducationDataPortal_02.24.2022_award_level.csv")
 ```
+## Methodology
+All data presented in the report was collected and sorted by the Urban Institute. For the data specially used below, the data can be found through the link in the accompanying code. The colleges highlighted below are limited to Pennsylvania for the most recent year data is available.
 
+## Topic
+With the student loan debt continuing to increase and pressure mounts on the Biden Administration to act, are their other options for students? The two most common counter arguments to the "cancelling" of student debt are: 1) these students chose to take on debt (i.e. there are other options); and 2) it is regressive (This topic will not be covered). Both appear to be fair criticisms of the policy. Let us look a little closer.
 
-
-```{r # of Colleges that Offer Degree Type, echo=FALSE}
+#1. Number of Colleges Offering Degree Types
+If students are indeed choosing to take on debt, there would have to be other options. The most commonly cited alternative is attending community college that offers an Associate's degree. Is this a viable option? More institutions offer a Bachelor's degree than an Associate's degree, but with just under 100 institutions offering an Associate's degree in Pennsylvania, it appears that quantity of institutions is not an issue. NOTE: Penn State University has a plethora of satellite campuses that offer Associate's degrees which may skew this number up.
+```{r # of Colleges that Offer Degree Type, echo=TRUE}
 EducationDataPortal_02.24.2022_award_level %>%
   group_by(award_level) %>%
   count(awards) %>%
@@ -43,13 +43,10 @@ EducationDataPortal_02.24.2022_award_level %>%
          y = "Number of Schools", 
          colour = "Degree/Award Type")
 ```
+#2. Tuition Types
+Most who have thought about attending a higher education have noticed the difference between in-state and out-of-state pricing. Based in the data presented below, we are unable to distinguish a large difference in the average of in-state and out-of-state tuition costs (NOTE: A hypothesis test has not been performed). However, practically, in-state vs. out-of-state can be thousands of dollars. Attending an institution in-state could save thousands, practically.
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
-
-
-
-```{r Average Cost Per Tutition Type, echo=FALSE}
+```{r Average Cost Per Tutition Type, echo=TRUE}
 EducationDataPortal_02.24.2022_level_of_study.x.tuition_type %>%
   group_by(tuition_type,
            level_of_study = "Undergraduate") %>%
@@ -64,7 +61,10 @@ EducationDataPortal_02.24.2022_level_of_study.x.tuition_type %>%
   ) 
 
 ```
-```{r University Book Costs Across PA, echo = FALSE}
+#3. Book Costs
+Necessary materials for class, such as books, are not included in typical pricing of higher education institutions. Unfortunately, students will not know the costs of books until after signing up for classes let alone before picking an institution, so there is does not lend to the argument of choice. Nonetheless, it appears that more than half of the institutions are below the mean. Transparency of book costs could lend to greater choice. 
+
+```{r University Book Costs Across PA, echo = TRUE}
 EducationDataPortal_02.24.2022_living_arrangement %>%
   group_by(inst_name) %>%
   summarise(mean_book_cost = mean(books_supplies)) %>%
@@ -75,10 +75,12 @@ EducationDataPortal_02.24.2022_living_arrangement %>%
              linetype = "dashed") +
   labs(title = "University Book Costs Across PA",
                   x = "Average Cost",
-                  y = "Percentage of Institutions")
+                  y = "Percentage of Institutions (/100")
 ```
+#4. Repayment Rate by Family Income
+One might be thinking how does repayment rate by family income contribute to choice? A student's ability to pay back a loan may seriously hinder their prospective choices. Family's with higher incomes may feel more comfortable taking a loan than low or mid-income families. Comparisons of the plots below show that higher income families tend to have larger repayment rates than lower income families at higher education institutions. This is no surprise and does not lend additional credence to the argument of choice.
 
-```{Comparing Reparyment Rate Per Family Income }
+```{r Comparing Reparyment Rate Per Family Income, echo= TRUE}
 
 EducationDataPortal_02.24.2022_years_since_entering_repay %>%
   group_by(inst_name) %>%
@@ -110,6 +112,8 @@ EducationDataPortal_02.24.2022_years_since_entering_repay %>%
   labs(title = "Repayment Rate For High-Income Students",
        x = "Repayment Rate",
        y = NULL)
-
-
 ```
+#Conclusion
+The argument of choice in higher education as it relates to student debt is more nuanced than examined here. The supporting and contradictory data points presented do not fully capture the picture to make a conclusion on whether the argument of choice is sound. 
+
+/end{document}
