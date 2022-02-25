@@ -7,6 +7,8 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
 ```
 
 ## R Markdown
@@ -15,16 +17,31 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
+```{r Installing Data}
+## Query URL:https://ed-data-portal.urban.org/data-explorer/explorer/?educationLevel=College&fipsNumbers=42&endYear=2019&timeframeType=most-recent&togglesList=23-530%2C22-528%2C66-452%2C66-451%2C66-450%2C6-1108%2C10-1120
+EducationDataPortal_02.24.2022_years_since_entering_repay <- read.csv("~/Downloads/EducationDataPortal_02.24.2022_all_files/EducationDataPortal_02.24.2022_years_since_entering_repay.csv")
+EducationDataPortal_02.24.2022_living_arrangement <- read.csv("~/Downloads/EducationDataPortal_02.24.2022_all_files/EducationDataPortal_02.24.2022_living_arrangement.csv")
+EducationDataPortal_02.24.2022_datadictionary <- read.csv("~/Downloads/EducationDataPortal_02.24.2022_all_files/EducationDataPortal_02.24.2022_datadictionary.csv")
+EducationDataPortal_02.24.2022_level_of_study.x.tuition_type <- read.csv("~/Downloads/EducationDataPortal_02.24.2022_all_files/EducationDataPortal_02.24.2022_level_of_study x tuition_type.csv")
+EducationDataPortal_02.24.2022_award_level <- read.csv("~/Downloads/EducationDataPortal_02.24.2022_all_files/EducationDataPortal_02.24.2022_award_level.csv")
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r # of Colleges that Offer Degree Type, echo=FALSE}
+EducationDataPortal_02.24.2022_award_level %>%
+  group_by(award_level) %>%
+  count(awards) %>%
+  ggplot() +
+  geom_bar(
+    mapping = aes(x = award_level, colour = award_level),
+    show.legend = TRUE) +
+    theme(axis.title.x=element_blank(),
+      axis.text.x=element_blank(),
+      axis.ticks.x=element_blank()) +
+    labs(title = "Number of Colleges Offering Each Degree Type in PA", 
+         y = "Number of Schools", 
+         colour = "Degree/Award Type")
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
